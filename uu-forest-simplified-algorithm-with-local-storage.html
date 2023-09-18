@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UuAppDesignKit.UuBulletList Demo</title>
+
+    <script src="https://cdn.plus4u.net/uu-uu5loaderg01/1.0.0/uu5loaderg01.min.js" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.plus4u.net/uu-appdesignkitg02/0.0.0/assets/example-config.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // prettier-ignore
+      Uu5Loader.config({
+        "imports": {
+          react: "https://cdn.plus4u.net/libs/react/17.0.1/react.min.js",
+
+          "react-dom": "https://cdn.plus4u.net/libs/react-dom/17.0.1/react-dom.min.js",
+          "create-react-class": "https://cdn.plus4u.net/libs/create-react-class/15.6.3/create-react-class.min.js",
+          "prop-types": "https://cdn.plus4u.net/libs/prop-types/15.7.2/prop-types.min.js",
+
+          uu5g05: "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05.min.js",
+          "uu5g05-elements": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-elements.min.js",
+          "uu5g05-editing": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-editing.min.js",
+          "uu5g05-forms": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-forms.min.js",
+          "uu5g05-dev": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-dev.min.js",
+          "uu5g05-bricks-support": "https://cdn.plus4u.net/uu-uu5g05/1.0.0/uu5g05-bricks-support.min.js",
+
+          uu_appdesignkitg02: "https://cdn.plus4u.net/uu-appdesignkitg02/0.1.0/uu_appdesignkitg02.min.js"
+        },
+      });
+    </script>
+
+    <style>
+      body {
+        padding: 16px 32px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="renderHere"></div>
+
+    <script type="text/babel">
+      import { Utils, createComponent, useState } from "uu5g05";
+      import Uu5Elements from "uu5g05-elements";
+      import UuAppDesignKit from "uu_appdesignkitg02";
+
+      const Page = createComponent({
+        render() {
+          const [editMode, setEditMode] = useState({
+            edit: false,
+            onReady: (opt) => console.log("edit ready"),
+            onChange: (opt) => setValue(opt.props.value),
+          });
+          const [value, setValue] = useState(
+            JSON.parse(localStorage.getItem("uuForestLocalValue")) || {
+              code: "70079939697ce4f9b8e0c3b804e9f298",
+              name: "New Algorithm",
+              description: "",
+              nodeList: [],
+            }
+          );
+
+          return (
+            <Uu5Elements.Block
+              actionList={[
+                {
+                  icon: editMode.edit ? "mdi-pencil-off" : "mdi-pencil",
+                  children: editMode.edit ? "Uložit" : "Upravit",
+                  onClick: () =>
+                    setEditMode((currentValue) => {
+                      if (currentValue.edit) {
+                        localStorage.setItem("uuForestLocalValue", JSON.stringify(value));
+                        return {
+                          edit: false,
+                          onReady: (opt) => console.log("edit ready"),
+                          onChange: (opt) => setValue(opt.props.value),
+                        };
+                      } else {
+                        return {
+                          edit: true,
+                          onReady: (opt) => console.log("edit ready"),
+                          onChange: (opt) => setValue(opt.props.value),
+                        };
+                      }
+                    }),
+                },
+              ]}
+            >
+              <UuAppDesignKit.UuForest
+                editMode={editMode}
+                value={value}
+                config={{
+                  icon: "mdi-format-list-bulleted",
+                  topSectionInputList: [
+                    {
+                      uu5Tag: "EditableText",
+                      props: {
+                        label: "Description",
+                        valueKey: "description",
+                        placeholder: "description",
+                      },
+                    },
+                  ],
+                  allowedRootNodeList: [
+                    "step",
+                    "success",
+                    "warning",
+                    "error",
+                    "sequence",
+                    "selection",
+                    "switch",
+                    "tryCatchFinally",
+                  ],
+                  maxNodes: 25,
+                  nodeMap: {
+                    step: {
+                      name: "Step",
+                      icon: "mdi-label",
+                      type: "step",
+                      info: "This is a simple help for step, just to show how it works.",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      childrenInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "Description",
+                            valueKey: "description",
+                            placeholder: "description",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableSelect",
+                          props: {
+                            label: "President 01",
+                            valueKey: "president01",
+                            itemList: [
+                              {
+                                value: "Pavel",
+                              },
+                              {
+                                value: "Babiš",
+                              },
+                              {
+                                value: "Nerudová",
+                              },
+                              {
+                                value: "Bašta",
+                              },
+                              {
+                                value: "Diviš",
+                              },
+                              {
+                                value: "Fíla",
+                              },
+                              {
+                                value: "Hilscher",
+                              },
+                            ],
+                            placeholder: "president01",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableTextSelect",
+                          props: {
+                            label: "President 02",
+                            valueKey: "president02",
+                            itemList: [
+                              {
+                                value: "Pavel",
+                              },
+                              {
+                                value: "Babiš",
+                              },
+                              {
+                                value: "Nerudová",
+                              },
+                              {
+                                value: "Bašta",
+                              },
+                              {
+                                value: "Diviš",
+                              },
+                              {
+                                value: "Fíla",
+                              },
+                              {
+                                value: "Hilscher",
+                              },
+                            ],
+                            placeholder: "president02",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [],
+                        },
+                      ],
+                    },
+                    success: {
+                      name: "Success",
+                      icon: "mdi-check-circle",
+                      colorScheme: "positive",
+                      type: "success",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      childrenInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "Description",
+                            valueKey: "description",
+                            placeholder: "description",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [],
+                        },
+                      ],
+                    },
+                    warning: {
+                      name: "Warning",
+                      icon: "mdi-alert-outline",
+                      colorScheme: "warning",
+                      type: "warning",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "prefix",
+                            placeholder: "prefix",
+                          },
+                        },
+                      ],
+                      childrenInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "ErrorCode",
+                            valueKey: "errorCode",
+                            placeholder: "errorCode",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "Description",
+                            valueKey: "description",
+                            placeholder: "description",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [],
+                        },
+                      ],
+                    },
+                    error: {
+                      name: "Error",
+                      icon: "mdi-alert-circle",
+                      colorScheme: "negative",
+                      type: "error",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      childrenInputList: [
+                        {
+                          uu5Tag: "EditableCheckbox",
+                          props: {
+                            innerLabel: "Throw Error",
+                            valueKey: "throwError",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "ErrorCode",
+                            valueKey: "errorCode",
+                            placeholder: "errorCode",
+                          },
+                        },
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            label: "Description",
+                            valueKey: "description",
+                            placeholder: "description",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [],
+                        },
+                      ],
+                    },
+                    sequence: {
+                      name: "Sequence",
+                      icon: "mdi-format-list-bulleted",
+                      colorScheme: "purple",
+                      type: "sequence",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    iteration: {
+                      name: "Iteration",
+                      icon: "mdi-repeat",
+                      colorScheme: "purple",
+                      type: "iteration",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    selection: {
+                      name: "Selection",
+                      icon: "mdi-arrow-decision",
+                      colorScheme: "cyan",
+                      type: "selection",
+                      childrenNodeIndexType: "romeNumbers",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["if"],
+                          min: 1,
+                          max: 1,
+                        },
+                        {
+                          allowedNodeList: ["elseIf"],
+                          max: 32,
+                        },
+                        {
+                          allowedNodeList: ["else"],
+                          max: 1,
+                        },
+                      ],
+                    },
+                    if: {
+                      name: "If",
+                      type: "if",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "cyan",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "success",
+                            "warning",
+                            "error",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    elseIf: {
+                      name: "Else If",
+                      type: "elseIf",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "cyan",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    else: {
+                      name: "Else",
+                      type: "else",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "cyan",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    switch: {
+                      name: "Switch",
+                      icon: "mdi-arrow-decision",
+                      colorScheme: "pink",
+                      type: "switch",
+                      childrenNodeIndexType: "smallLetters",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["case"],
+                          min: 2,
+                          max: 32,
+                        },
+                        {
+                          allowedNodeList: ["default"],
+                          max: 1,
+                        },
+                      ],
+                    },
+                    case: {
+                      name: "Case",
+                      type: "case",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "pink",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    default: {
+                      name: "Default",
+                      type: "default",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "pink",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: [
+                            "step",
+                            "success",
+                            "warning",
+                            "error",
+                            "sequence",
+                            "selection",
+                            "switch",
+                            "tryCatchFinally",
+                          ],
+                        },
+                      ],
+                    },
+                    tryCatchFinally: {
+                      name: "Try-Catch-Finally",
+                      icon: "mdi-hook",
+                      colorScheme: "dark-purple",
+                      type: "tryCatchFinally",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["try", "catch", "finally"],
+                        },
+                      ],
+                    },
+                    try: {
+                      name: "Try",
+                      type: "try",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "dark-purple",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["step", "success", "warning", "error", "sequence", "selection", "switch"],
+                        },
+                      ],
+                    },
+                    catch: {
+                      name: "Catch",
+                      type: "catch",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "dark-purple",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["step", "success", "warning", "error", "sequence", "selection", "switch"],
+                        },
+                      ],
+                    },
+                    finally: {
+                      name: "Finally",
+                      type: "finally",
+                      headerInputList: [
+                        {
+                          uu5Tag: "EditableText",
+                          props: {
+                            valueKey: "name",
+                            placeholder: "name",
+                          },
+                        },
+                      ],
+                      colorScheme: "dark-purple",
+                      allowedNodeGroupList: [
+                        {
+                          allowedNodeList: ["step", "success", "warning", "error", "sequence", "selection", "switch"],
+                        },
+                      ],
+                    },
+                  },
+                }}
+              />
+            </Uu5Elements.Block>
+          );
+        },
+      });
+
+      Utils.Dom.render(<Page />, document.getElementById("renderHere"));
+    </script>
+  </body>
+</html>
